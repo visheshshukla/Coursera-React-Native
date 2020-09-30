@@ -1,29 +1,25 @@
-import React from 'react';
-import { Text, View } from 'react-native';
-import { Card } from 'react-native-elements';
+import React, { Component } from 'react';
+import { DISHES } from '../shared/dishes';
 
-function RenderDish(props) {
+class Dishdetail extends Component {
 
-    const dish = props.dish;
-    
-        if (dish != null) {
-            return(
-                <Card
-                featuredTitle={dish.name}
-                image={require('./images/uthappizza.png')}>
-                    <Text style={{margin: 10}}>
-                        {dish.description}
-                    </Text>
-                </Card>
-            );
-        }
-        else {
-            return(<View></View>);
-        }
-}
+    constructor(props) {
+        super(props);
+        this.state = {
+            dishes: DISHES
+        };
+    }
 
-function Dishdetail(props) {
-    return(<RenderDish dish={props.dish} />);
+    static navigationOptions = {
+        title: 'Dish Details'
+    };
+
+    render() {
+        const dishId = this.props.navigation.getParam('dishId','');
+        return(
+            <RenderDish dish={this.state.dishes[+dishId]} />
+        );
+    }
 }
 
 export default Dishdetail;
