@@ -1,6 +1,6 @@
 # Coursera React Native
 
-**This Repository Contains The Work Associated With Multiplatform Mobile App Development with React Native Course.**
+**This Repository Contains The Work Associated With Multiplatform Mobile App Development with React Native.**
 
 **It Contains All The Code Along Work And Assignment Done During The Course.**
 
