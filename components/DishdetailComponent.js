@@ -21,13 +21,20 @@ const mapDispatchToProps = dispatch => ({
 })
 
 const RenderDish = (props) => {
-    const dish = props.dish
+  const dish = props.dish
 
-    const recognizeDrag = ({ moveX, moveY, dx, dy }) => {
+  const recognizeDragRightToLeft = ({moveX, moveY, dx, dy}) => {
       if ( dx < -200 )
-          return true;
+        return true;
       else
-          return false;
+        return false;
+  }
+
+  const recognizeDragLeftToRight = ({moveX, moveY, dx, dy}) => {
+    if (dx > 100) 
+      return true;
+    else 
+      return false;
   }
 
   handleViewRef = ref => this.view = ref;
@@ -39,8 +46,8 @@ const RenderDish = (props) => {
       onPanResponderGrant: () => {this.view.rubberBand(1000).
         then(endState => console.log(endState.finished ? 'finished' : 'cancelled'));},
       onPanResponderEnd: (e, gestureState) => {
-          console.log("pan responder end", gestureState);
-          if (recognizeDrag(gestureState))
+        console.log('pan responder end right to left', gestureState)
+        if (recognizeDragRightToLeft(gestureState)) {
               Alert.alert(
                   'Add Favorite',
                   'Are you sure you wish to add ' + dish.name + ' to favorite?',
@@ -51,7 +58,13 @@ const RenderDish = (props) => {
                   { cancelable: false }
               );
 
-          return true;
+              return true;
+            } 
+        else 
+        if (recognizeDragLeftToRight(gestureState)) {
+              props.toggleModal()
+              return true;
+            }
       }
   })
   
