@@ -30,10 +30,14 @@ const RenderDish = (props) => {
           return false;
   }
 
+  handleViewRef = ref => this.view = ref;
+
   const panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (e, gestureState) => {
           return true;
       },
+      onPanResponderGrant: () => {this.view.rubberBand(1000).
+        then(endState => console.log(endState.finished ? 'finished' : 'cancelled'));},
       onPanResponderEnd: (e, gestureState) => {
           console.log("pan responder end", gestureState);
           if (recognizeDrag(gestureState))
@@ -42,7 +46,7 @@ const RenderDish = (props) => {
                   'Are you sure you wish to add ' + dish.name + ' to favorite?',
                   [
                   {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                  {text: 'OK', onPress: () => {props.favorite ? console.log('Already favorite') : props.onPress()}},
+                  {text: 'OK', onPress: () => {props.favorite ? console.log('Already favorite') : props.addFavorite()}},
                   ],
                   { cancelable: false }
               );
@@ -54,7 +58,8 @@ const RenderDish = (props) => {
     if (dish != null) {
       return (
         <Animatable.View animation="fadeInDown" duration={2000} delay={1000}
-            {...panResponder.panHandlers}>
+                ref={this.handleViewRef}
+                {...panResponder.panHandlers}>
             <Card
             featuredTitle={dish.name}
             image={{uri: baseUrl + dish.image}}>
